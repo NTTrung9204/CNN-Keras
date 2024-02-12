@@ -4,7 +4,7 @@ import cv2
 from keras import Sequential
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten
 
-new_size = (124, 124)
+new_size = (118, 118)
 
 def read_image(folder_path):
     images_np = []
@@ -41,19 +41,15 @@ img_label = img_label_temp[random_indices]
 
 model = Sequential()
 
-model.add(Conv2D(64, (5, 5), activation="relu", input_shape=(124, 124, 3)))
+model.add(Conv2D(32, (3, 3), activation="relu", input_shape=(118, 118, 3)))
 
 model.add(MaxPool2D(pool_size=(2, 2)))
 
-model.add(Conv2D(64, (5, 5), activation="relu"))
+model.add(Conv2D(64, (3, 3), activation="relu"))
 
 model.add(MaxPool2D(pool_size=(2, 2)))
 
-model.add(Conv2D(64, (5, 5), activation="relu"))
-
-model.add(MaxPool2D(pool_size=(2, 2)))
-
-model.add(Conv2D(64, (5, 5), activation="relu"))
+model.add(Conv2D(128, (3, 3), activation="relu"))
 
 model.add(MaxPool2D(pool_size=(2, 2)))
 
@@ -65,7 +61,7 @@ model.add(Dense(1, activation="sigmoid"))
 
 model.compile(loss='binary_crossentropy', optimizer="adam", metrics=['accuracy'])
 
-model.fit(img_train, img_label, batch_size=32, epochs=15)
+model.fit(img_train, img_label, batch_size=32, epochs=20)
 
 img_dog_pred = model.predict(img_dog_test)
 img_cat_pred = model.predict(img_cat_test)
