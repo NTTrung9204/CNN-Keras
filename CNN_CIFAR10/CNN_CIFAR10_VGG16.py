@@ -31,10 +31,12 @@ model.add(Dense(10, activation="softmax"))
 
 model.compile(loss='categorical_crossentropy', optimizer="adam", metrics=['accuracy'])
 
-model.fit(x_train, y_train, batch_size=32, epochs=30)
+model.fit(x_train, y_train, batch_size=32, epochs=5)
 
 y_pred = model.predict(x_test)
 
 print(f"Accuracy: {100*accuracy_score(np.argmax(y_pred, axis=1), np.argmax(y_test, axis=1)):.2f}")
 
 model.summary()
+
+model.save('CNN_VGG16.keras')
