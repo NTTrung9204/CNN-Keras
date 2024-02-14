@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 from keras import Sequential
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten
-from keras.applications import DenseNet169
+from keras.applications import DenseNet121
 
 new_size = (224, 224)
 
@@ -38,17 +38,17 @@ random_indices = np.random.permutation(img_train_temp.shape[0])
 img_train = img_train_temp[random_indices]
 img_label = img_label_temp[random_indices]
 
-# Khởi tạo mô hình DenseNet169 với trọng số được tải sẵn từ ImageNet
-densenet_model = DenseNet169(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+# Khởi tạo mô hình DenseNet121 với trọng số được tải sẵn từ ImageNet
+densenet_model = DenseNet121(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 
-# Đóng băng các lớp trong mô hình DenseNet169
+# Đóng băng các lớp trong mô hình DenseNet121
 for layer in densenet_model.layers:
     layer.trainable = False
 
 # Xây dựng mô hình phân loại bằng Sequential API
 model = Sequential()
 
-# Thêm mô hình DenseNet169 vào mô hình Sequential
+# Thêm mô hình DenseNet121 vào mô hình Sequential
 model.add(densenet_model)
 
 # Thêm lớp Flatten để chuyển từ tensor 3D thành vector 1D
@@ -63,7 +63,7 @@ model.add(Dense(1, activation='sigmoid'))
 # Biên soạn mô hình
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-model.fit(img_train, img_label, batch_size=32, epochs=1)
+model.fit(img_train, img_label, batch_size=32, epochs=5)
 
 img_dog_pred = model.predict(img_dog_test)
 img_cat_pred = model.predict(img_cat_test)
@@ -81,4 +81,4 @@ print(f"Accuracy: {100*accuracy_score:.2f}%")
 
 model.summary()
 
-model.save('Model_DenseNet169.keras')
+model.save('Model_DenseNet121.keras')

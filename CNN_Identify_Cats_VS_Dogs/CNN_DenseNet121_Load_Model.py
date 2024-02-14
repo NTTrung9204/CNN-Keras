@@ -4,9 +4,9 @@ import numpy as np
 import cv2
 from keras import Sequential
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten
-from keras.applications import DenseNet169
+from keras.applications import DenseNet121
 
-model = load_model('Model_DenseNet169.keras')
+model = load_model('Model_DenseNet121.keras')
 
 new_size = (224, 224)
 
@@ -59,4 +59,4 @@ print(f"Accuracy: {100*accuracy_score:.2f}%")
 
 model.summary()
 
-model.save('Model_DenseNet169.keras')
+model.save('Model_DenseNet121.keras')
