@@ -13,8 +13,8 @@ import sys
 if __name__ == "__main__":
     TRAIN_PATH_DOG = "dataset/train/dog/"
     TRAIN_PATH_CAT = "dataset/train/cat/"
-    EPOCHS = 5
-    BATCH_SIZE = 64
+    EPOCHS = 25
+    BATCH_SIZE = 32
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -30,9 +30,9 @@ if __name__ == "__main__":
     # ])
 
     transforms = transforms.Compose([
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(30),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
+        transforms.RandomHorizontalFlip(p=0.2),
+        transforms.RandomApply([transforms.RandomRotation(15)], p=0.2),
+        transforms.RandomApply([transforms.ColorJitter(brightness=0.15, contrast=0.15, saturation=0.15, hue=0.15)], p=0.2),
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
             losses.append(loss.item())
 
-            sys.stdout.write(f"\r[{epoch + 1}|{EPOCHS}], [{sub_epoch + 1:4d}|{len(CD_Loader)}], Loss: {losses[-1]:.4f}")
+            sys.stdout.write(f"\r[{epoch + 1:4d}|{EPOCHS}], [{sub_epoch + 1:4d}|{len(CD_Loader)}], Loss: {losses[-1]:.4f}")
         print()
 
     plt.plot(losses)
